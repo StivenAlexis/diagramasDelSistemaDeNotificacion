@@ -6,7 +6,7 @@ classDiagram
     -List<IPlataformaDeComunicacion> plataformasPreferidas
     -List<ICalendario> calendariosPreferidos
     -List<Notificacion> bandejaDeNotificaciones
-    -Mediador mediador
+    -PlataformaMediator plataformaMediador
     +RecibirNotificacion(Notificacion)
     +ElegirHorario()
     +ConfigurarNotificacion(frecuencia, formato)
@@ -32,6 +32,8 @@ classDiagram
   }
 
   class Notificacion {
+    -String receptor
+    -String emisor
     -String titulo
     -String mensaje
   }
@@ -48,13 +50,10 @@ classDiagram
     +setMediator(mediator: PlataformaMediator)
 
   }
-class PlataformaMediator{
--List<IPlataformaDeComunicacion> plataformas
-+enviarNotificacion(notificacion:Notificacion)
-}
 
 
-  class SMS {
+
+  class Sms {
     -String numeroDeTelefono
     +enviarNotificacion(notificacion: Notificacion)
     +setMediator(mediator:PlataformaMediator)  
@@ -112,39 +111,45 @@ class PlataformaMediator{
     +AgregarEvento(tituloEvento, cuerpo, horaDeInicio, horaDeFinalizacion, dia, mes, anio)
   }
 
-  class Mediador {
-    -List<IPlataformaDeComunicacion> plataformasComunicacion
-    -ICalendario calendario
-    +enviarNotificacion(notificacion: Notificacion)
-    +agregarEventoCalendario(tituloEvento, cuerpo, horaDeInicio, horaDeFinalizacion, dia, mes, anio)
-    +notificarAlerta(mesa: Mesa, profesor: Profesor)
+  class NotificacionMediator {
+    +notificar(Notificacion notificacion)
+    +notificarAlerta(Alerta alerta)
   }
-
+   class PlataformaMediator{
+    -List<IPlataformaDeComunicacion> plataformas
+    -List<ICanlendario> calendarios
+    +enviarNotificacion(notificacion:Notificacion)
+  }
+  
   Mesa o-- Alumno: *
   Mesa o-- Profesor: *
 
   DepartamentoDeCoordinacion --> Mesa: mesaParaEditar
   DepartamentoDeCoordinacion o-- Mesa: *
-  DepartamentoDeCoordinacion --> Profesor: notificar mesa
+  
 
   Notificacion <|-- Alerta: hereda
 
   ICalendario <|.. GoogleCalendar: aplica
+  IPlataformaDeComunicacion  <|.. Sms: *
+  
+  IPlataformaDeComunicacion  <|.. Email: *
 
   Cuenta <|-- Profesor : Hereda
   Cuenta <|-- DepartamentoDeCoordinacion: Hereda
   Cuenta o-- IFormasDeAcceso : *
 
 
-  Profesor o-- ICalendario: [1..*]
-  Profesor --> Mediador: mediador
-  DepartamentoDeCoordinacion --> Mediador: mediador
+  Profesor "1" o-- "*" Notificacion
+  Profesor --> NotificacionMediator: mediador
+  
+
+  DepartamentoDeCoordinacion --> NotificacionMediator : mediador
 
   IFormasDeAcceso <|.. AccesoGoogle: aplica
 
-PlataformaMediator	-->   Profesor
-PlataformaMediator   o--  IPlataformaDeComunicacion:*
-PlataformaMediator   o--  SMS: *
-PlataformaMediator   o--  Email: *
-
+  PlataformaMediator --> Profesor
+  PlataformaMediator   o--  IPlataformaDeComunicacion:*
+  PlataformaMediator   o-- ICalendario
+  
 
