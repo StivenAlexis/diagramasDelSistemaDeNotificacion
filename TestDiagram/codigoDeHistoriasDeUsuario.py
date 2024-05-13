@@ -64,7 +64,9 @@ class Alerta:
 
 
 class DepartamentoDeCoodinacion(Cuenta):
- 
+    
+    mesas=[]
+
     def intanceMediator(self):
         mediator = NotificadorMediatorSingleton.getInstance()
         return mediator
@@ -73,7 +75,12 @@ class DepartamentoDeCoodinacion(Cuenta):
     def newAlerta(self, emisor, receptor, titulo, mensaje):
         alerta = Alerta(emisor, receptor, titulo, mensaje)
         self.alertasEnviadas.append(alerta)
-        return alerta 
+        return alerta
+
+    def crearMesa(self,anio,mes,dia,hora,profesor,asignatura,modalidad,numeroDeAula,llamado,rolProfesor,alumnosPresentes,profesoresPresentes):
+        mesa=Mesa(anio,mes,dia,hora,profesor,asignatura,modalidad,numeroDeAula,llamado,rolProfesor,alumnosPresentes,profesoresPresentes)
+        return mesa
+
         
    
 
