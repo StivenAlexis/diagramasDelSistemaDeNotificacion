@@ -1,5 +1,5 @@
 import unittest
-from codigoDeHistorias1015 import *
+from TestDiagram.codigoDeHistoriasDeUsuario import *
 
 class TestHistorias10_15(unittest.TestCase):
     

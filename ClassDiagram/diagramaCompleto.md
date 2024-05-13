@@ -1,6 +1,6 @@
 ````mermaid
 classDiagram
-  class ProfesorDecorator {
+   class ProfesorDecorator {
     +Int dni
     +List<Notificacion> bandejaDeNotificaciones
     +PlataformaMediator plataformaMediador
@@ -105,16 +105,18 @@ classDiagram
    class PlataformaMediator{
     -List<IPlataformaDeComunicacionStrategy> estrategiasDeComunicacion
     -List<ICanlendario> calendarios
+    +aniadirCanlendario(Icalendario)
+    +aniadirPlataforma(Iplataforma)
     +enviarNotificacion(notificacion:Notificacion)
     +agregarEvento(tituloEvento, cuerpo, horaDeInicio, horaDeFinalizacion, dia, mes, anio)
   }
   Mesa o-- Alumno: *
-  Mesa o-- ProfesorDecorator: *
+  Mesa o-- ProfesorDecorator: 2
 
 
 
 
-  DepartamentoDeCoordinacionDecorator --> Mesa: modificarHoraDeLaMesa()
+ 
   DepartamentoDeCoordinacionDecorator o-- Mesa: *
  
   Notificacion <|-- Alerta: hereda
